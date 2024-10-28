@@ -1,3 +1,4 @@
+
 """
 A movie recommender app built with Streamlit.
 """
@@ -58,18 +59,17 @@ def get_movie_id_from_title(title_str: str) -> int:
 
 def prepare_query_favourites() -> dict:
     """
-    Function to prepare query to search for movies based on favourite movies.
+    Funpiction to prepare query to search for movies based on favourite movies.
     """
     data = get_movies()
 
     st.markdown(
-        "Don't know which movie to watch tonight?"
-        "Just **tell us some of your favourite movies** and based on that "
-        "we'll recommend you something you might like."
+        "어떤 영화를 볼지 고민 중이신가요?"
+        " **최애 영화 알려주시면** 취향에 맞게 추천해 드릴게요"
     )
 
     user_ratings = st.multiselect(
-        "Select as many movies as you like. Type to filter the list.",
+        "원하시는 영화 다 선택해 주세요.",
         data["title"],
     )
 
@@ -90,9 +90,9 @@ def prepare_query_rating() -> dict:
     data = get_random_movies_to_rate(10)
 
     st.markdown(
-        "Don't know which movie to watch tonight? Here are 10 randomly chosen movies."
-        "Just **rate as many of them as you like** and based on your rating "
-        "we'll recommend you something you might like."
+        "어떤 영화를 봐야 할지 모르겠나요? 다음 무작위로 선태된 10편의 영화입니다."
+        " **별점**을 매겨주시면 그 별점에 따라"
+        "저희가 그 별점을 바탕으로 추천해 드리겠습니다."
     )
 
     query = {}
@@ -114,7 +114,7 @@ def recommender(rec_type: str = "fav") -> None:
 
     # Show select list for algorithm to use
     method_select = st.selectbox(
-        "Select algorithm",
+        "원하시는 알고리즘 선택해 주세요",
         ["Nearest Neighbors", "Non-negative matrix factorization"],
         key="method_selector_" + rec_type,
     )
@@ -123,7 +123,7 @@ def recommender(rec_type: str = "fav") -> None:
     method = "neighbors" if method_select == "Nearest Neighbors" else "nmf"
 
     num_movies = st.slider(
-        "How many movies should we recommend?",
+        "몇 개의 영화를 추천해 드릴까요?",
         min_value=1,
         max_value=10,
         value=5,
@@ -131,7 +131,7 @@ def recommender(rec_type: str = "fav") -> None:
     )
 
     # Start recommender
-    if st.button("Recommend some movies!", key="button_" + rec_type):
+    if st.button("영화 추천해 주세요!", key="button_" + rec_type):
         with st.spinner(f"Calculating recommendations using {method_select}..."):
             recommend = Recommender(query, method=method, k=num_movies)
             movie_ids, _ = recommend.recommend()
@@ -180,16 +180,16 @@ def display_movie(movie_id: int) -> None:
 
 
 # Set page title
-st.set_page_config(page_title="What should I watch tonight? | Your movie recommender")
+st.set_page_config(page_title="오늘 무슨 영화 볼까요?")
 
 # Header image
 st.image("data/cover_collage.jpg")
 
 # Print title and subtitle
-st.title("What should I watch tonight?")
-st.subheader("Your personal movie recommender")
+st.title("오늘 무슨 영화 볼까요?")
+st.subheader("개인 영화 추천 시스템")
 
-tab1, tab2 = st.tabs(["By favourite movies", "By rating"])
+tab1, tab2 = st.tabs(["좋아하는 영화", "별점"])
 
 with tab1:
     recommender("fav")

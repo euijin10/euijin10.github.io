@@ -1,5 +1,5 @@
 """
-Fetch movie info from IMDB
+Fetch movie information from IMDB
 """
 
 import time

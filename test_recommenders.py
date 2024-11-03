@@ -1,5 +1,4 @@
 """
-
 Unit tests (pytest) for the Recommender class.
 """
 import pandas as pd
